@@ -5,18 +5,18 @@ package cs6301.g40;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.TreeMap;
 import java.util.HashMap;
 
 public class Euler extends GraphAlgorithm{
 	Graph graph;
     int VERBOSE;
-    Euler.EulerEdge [][] EdgeArray;
+  //  Euler.EulerEdge [][] EdgeArray;
     Graph.Vertex start;
-   ArrayList<Graph.Edge> finalTour;
+    ArrayList<Graph.Edge> finalTour;
     boolean [] explore;
 //	ArrayList<List<Graph.Edge>> Tourlist ; //= new java.util.ArrayList<>();
-	Map<Graph.Vertex, List<Graph.Edge>> mapper = new HashMap<>();
+//	Map<Graph.Vertex, List<Graph.Edge>> mapper = new HashMap<>();
 	
     // Constructor
 	
@@ -28,7 +28,7 @@ public class Euler extends GraphAlgorithm{
 //	Tourlist = new java.util.ArrayList<>();
 	explore = new boolean[g.size()];
 	this.graph = g;
-	this.EdgeArray = new Euler.EulerEdge[g.size()][g.size()];
+//	this.EdgeArray = new Euler.EulerEdge[g.size()][g.size()];
 	node = new Euler.EulerVertex[g.size()];
 	finalTour = new ArrayList<>();
 	
@@ -38,6 +38,7 @@ public class Euler extends GraphAlgorithm{
     static class EulerVertex{
     int limit;
     boolean seenTour;
+  //  TreeMap<Graph.Vertex, Boolean> Edgeseen;
     ArrayList<Graph.Edge> tour;
     boolean TourStarter;
      EulerVertex(int limit){
@@ -46,16 +47,18 @@ public class Euler extends GraphAlgorithm{
      	this.TourStarter=false;
      	ArrayList tourFinal=
      	tour = new ArrayList<>();
+//		 Edgeseen = new TreeMap<>();
      	
 		}
 	}
 	
-   static class EulerEdge{
+  /* static class EulerEdge extends Graph.Edge{
     	boolean seen;
     	EulerEdge(boolean seen){
+    		
     		this.seen = false;
 		}
-	}
+	}*/
 
     // To do: function to find an Euler tour
 	
@@ -110,9 +113,10 @@ public class Euler extends GraphAlgorithm{
 		for (Graph.Vertex v:g
 			 ) {
 			this.node[v.getName()] = new EulerVertex(v.adj.size());
-			for (Graph.Edge e:v
+			for (Graph.Edge e:v.adj
 				 ) {
-			this.EdgeArray[e.from.getName()][e.to.getName()] = new Euler.EulerEdge(false);
+		//	this.EdgeArray[e.from.getName()][e.to.getName()] = new Euler.EulerEdge(false);
+				//((cs6301.g40.Euler.EulerVertex) this.node[v.getName()]).Edgeseen.put(e.otherEnd(v),false);
 			}
 			
 		}
@@ -145,7 +149,10 @@ public class Euler extends GraphAlgorithm{
 			if(((Euler.EulerVertex)node[u.getName()]).limit>0) {
 				for (Graph.Edge e : u.adj
 						) {
-					if (!this.EdgeArray[u.getName()][e.to.getName()].seen) {
+				//	if (!this.EdgeArray[u.getName()][e.to.getName()].seen)
+				//	if(!((Euler.EulerVertex)node[u.getName()]).Edgeseen.get(e.otherEnd(u)))
+					if(!e.seen)
+					{
 						ArrayList<Graph.Edge> Anytour1 = new ArrayList<>();
 						findTour(u, Anytour1);
 					//	this.Tourlist.add(Anytour1);
@@ -166,8 +173,13 @@ public class Euler extends GraphAlgorithm{
 	void findTour(Graph.Vertex start,ArrayList<Graph.Edge> tour1){
 		for (Graph.Edge e: start.adj
 			 ) {
-			if (!this.EdgeArray[start.getName()][e.to.getName()].seen) {
-				this.EdgeArray[start.getName()][e.to.getName()].seen = true;
+		//	if (!this.EdgeArray[start.getName()][e.to.getName()].seen)
+		//	if(!((Euler.EulerVertex)node[start.getName()]).Edgeseen.get(e.otherEnd(start)))
+			if(!e.seen)
+			{
+				//this.EdgeArray[start.getName()][e.to.getName()].seen = true;
+			//	((Euler.EulerVertex)node[start.getName()]).Edgeseen.put(e.otherEnd(start),true);
+				e.seen =true;
 				tour1.add(e);
 				((Euler.EulerVertex) node[start.getName()]).limit -= 1;
 		//		temp = e.to;

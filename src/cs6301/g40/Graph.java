@@ -69,6 +69,7 @@ public class Graph implements Iterable<Graph.Vertex> {
 	Vertex from; // head vertex
 	Vertex to; // tail vertex
 	int weight;// weight of edge
+	boolean seen;//
 
 	/**
 	 * Constructor for Edge
